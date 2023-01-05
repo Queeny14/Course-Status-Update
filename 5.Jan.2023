@@ -1,0 +1,268 @@
+Course : The Ultimate MySQL Bootcamp
+Creating Database and Table
+
+
+mysql> CREATE DATABASE shirts_db;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE shirts_db;
+Database changed
+
+mysql> CREATE TABLE shirts(
+    -> shirt_id INT AUTO_INCREMENT,
+    -> article VARCHAR(100),
+    -> color VARCHAR(100),
+    -> shirt_size VARCHAR(10),
+    -> last_worn INT,
+    -> PRIMARY KEY (shirt_id));
+    
+    mysql> DESC shirts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| shirt_id   | int          | NO   | PRI | NULL    | auto_increment |
+| article    | varchar(100) | YES  |     | NULL    |                |
+| color      | varchar(100) | YES  |     | NULL    |                |
+| shirt_size | varchar(10)  | YES  |     | NULL    |                |
+| last_worn  | int          | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+
+Showing Databases
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| pet_shop           |
+| queeny             |
+| sys                |
++--------------------+
+7 rows in set (0.01 sec)
+
+
+Inserting Data Into Tables
+
+mysql> INSERT INTO cats2(name,age) 
+    -> VALUES ("Bilbo",19);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *FROM cats2;
++-------+-----+
+| name  | age |
++-------+-----+
+| Bilbo |  19 |
++-------+-----+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE shops (
+    -> name VARCHAR(100));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO shops(name)
+    -> VALUES ('shoe emporium');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO shops(name) VALUES ('mario\'s pizza');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM shops;
++---------------+
+| name          |
++---------------+
+| shoe emporium |
+| mario's pizza |
++---------------+
+2 rows in set (0.00 sec)
+
+NOT NULL Constraint
+
+mysql> CREATE TABLE cats2(
+    -> name VARCHAR(50) NOT NULL,
+    -> age INT NOT NULL
+    -> );
+mysql> DESC cats2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| name  | varchar(50) | NO   |     | NULL    |       |
+| age   | int         | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+Adding Default Values
+
+mysql> CREATE TABLE cats3(
+    -> name VARCHAR (50) DEFAULT 'mystery',
+    -> age INT DEFAULT 99
+    -> );
+    mysql> INSERT INTO cats3
+    -> VALUES ()
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *FROM cats3;
++---------+------+
+| name    | age  |
++---------+------+
+| mystery |    2 |
+| mystery |   99 |
++---------+------+
+2 rows in set (0.00 sec)
+
+Multi Value Insertion
+
+mysql> INSERT INTO cats(name, breed, age) 
+    -> VALUES ('Ringo', 'Tabby', 4),
+    ->        ('Cindy', 'Maine Coon', 10),
+    ->        ('Dumbledore', 'Maine Coon', 11),
+    ->        ('Egg', 'Persian', 4),
+    ->        ('Misty', 'Tabby', 13),
+    ->        ('George Michael', 'Ragdoll', 9),
+    ->        ('Jackson', 'Sphynx', 7);
+Query OK, 7 rows affected (0.00 sec)
+
+Select Statement in MySQL
+
+mysql> SELECT* FROM cats;
++--------+----------------+------------+------+
+| cat_id | name           | breed      | age  |
++--------+----------------+------------+------+
+|      1 | Ringo          | Tabby      |    4 |
+|      2 | Cindy          | Maine Coon |   10 |
+|      3 | Dumbledore     | Maine Coon |   11 |
+|      4 | Egg            | Persian    |    4 |
+|      5 | Misty          | Tabby      |   13 |
+|      6 | George Michael | Ragdoll    |    9 |
+|      7 | Jackson        | Sphynx     |    7 |
++--------+----------------+------------+------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT name FROM cats;
++----------------+
+| name           |
++----------------+
+| Ringo          |
+| Cindy          |
+| Dumbledore     |
+| Egg            |
+| Misty          |
+| George Michael |
+| Jackson        |
++----------------+
+7 rows in set (0.00 sec)
+
++----------------+------------+
+| name           | breed      |
++----------------+------------+
+| Ringo          | Tabby      |
+| Cindy          | Maine Coon |
+| Dumbledore     | Maine Coon |
+| Egg            | Persian    |
+| Misty          | Tabby      |
+| George Michael | Ragdoll    |
+| Jackson        | Sphynx     |
++----------------+------------+
+7 rows in set (0.00 sec)
+
+WHERE Clause
+
+ysql> SELECT * FROM cats WHERE age=4;
++--------+-------+---------+------+
+| cat_id | name  | breed   | age  |
++--------+-------+---------+------+
+|      1 | Ringo | Tabby   |    4 |
+|      4 | Egg   | Persian |    4 |
++--------+-------+---------+------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT name FROM cats WHERE age=4;
++-------+
+| name  |
++-------+
+| Ringo |
+| Egg   |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT cat_id FROM cats;
++--------+
+| cat_id |
++--------+
+|      1 |
+|      2 |
+|      3 |
+|      4 |
+|      5 |
+|      6 |
+|      7 |
++--------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT name,age FROM cats WHERE breed='Tabby';
++-------+------+
+| name  | age  |
++-------+------+
+| Ringo |    4 |
+| Misty |   13 |
++-------+------+
+2 rows in set (0.00 sec)
+
+Using Aliases
+
+mysql> SELECT cat_id AS id, name FROM cats;
++----+----------------+
+| id | name           |
++----+----------------+
+|  1 | Ringo          |
+|  2 | Cindy          |
+|  3 | Dumbledore     |
+|  4 | Egg            |
+|  5 | Misty          |
+|  6 | George Michael |
+|  7 | Jackson        |
++----+----------------+
+7 rows in set (0.00 sec)
+
+Updating the value in the table
+
+mysql> UPDATE cats SET breed='Shorthair'
+    -> WHERE breed='Tabby';
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT *FROM cats;
++--------+----------------+------------+------+
+| cat_id | name           | breed      | age  |
++--------+----------------+------------+------+
+|      1 | Ringo          | Shorthair  |    4 |
+|      2 | Cindy          | Maine Coon |   10 |
+|      3 | Dumbledore     | Maine Coon |   11 |
+|      4 | Egg            | Persian    |    4 |
+|      5 | Misty          | Shorthair  |   13 |
+|      6 | George Michael | Ragdoll    |    9 |
+|      7 | Jackson        | Sphynx     |    7 |
++--------+----------------+------------+------+
+7 rows in set (0.00 sec)
+
+mysql> UPDATE cats SET name='Jack' WHERE name='Jackson';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT* FROM cats;
++--------+----------------+------------+------+
+| cat_id | name           | breed      | age  |
++--------+----------------+------------+------+
+|      1 | Ringo          | Shorthair  |    4 |
+|      2 | Cindy          | Maine Coon |   10 |
+|      3 | Dumbledore     | Maine Coon |   11 |
+|      4 | Egg            | Persian    |    4 |
+|      5 | Misty          | Shorthair  |   13 |
+|      6 | George Michael | Ragdoll    |    9 |
+|      7 | Jack           | Sphynx     |    7 |
++--------+----------------+------------+------+
+7 rows in set (0.00 sec)
+
+
