@@ -1,0 +1,1312 @@
+queeny@administrator-OptiPlex-3050:~$ mongo
+MongoDB shell version v5.0.14
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("717048a8-1bca-49b9-91b6-d9867a2a7614") }
+MongoDB server version: 5.0.14
+================
+Warning: the "mongo" shell has been superseded by "mongosh",
+which delivers improved usability and compatibility.The "mongo" shell has been deprecated and will be removed in
+an upcoming release.
+For installation instructions, see
+https://docs.mongodb.com/mongodb-shell/install/
+================
+---
+The server generated these startup warnings when booting: 
+        2023-01-11T10:16:33.295+05:30: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+        2023-01-11T10:16:33.766+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> show dbs
+admin    0.000GB
+config   0.000GB
+flights  0.000GB
+local    0.000GB
+shop     0.000GB
+> use flights
+switched to db flights
+> db.flightData.insertOne({
+...     "departureAirport": "MUC",
+...     "arrivalAirport": "SFO",
+...     "aircraft": "Airbus A380",
+...     "distance": 12000,
+...     "intercontinental": true
+...   })
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be56fb6e538291c43eee18")
+}
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be53ee94c6ee38252d0426"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+{
+	"_id" : ObjectId("63be562794c6ee38252d0427"),
+	"departureAirport" : "TXL",
+	"arrivalAirport" : "LHR"
+}
+{
+	"_id" : ObjectId("63be56fb6e538291c43eee18"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+> db.flightData.find()
+{ "_id" : ObjectId("63be53ee94c6ee38252d0426"), "departureAirport" : "MUC", "arrivalAirport" : "SFO", "aircraft" : "Airbus A380", "distance" : 12000, "intercontinental" : true }
+{ "_id" : ObjectId("63be562794c6ee38252d0427"), "departureAirport" : "TXL", "arrivalAirport" : "LHR" }
+{ "_id" : ObjectId("63be56fb6e538291c43eee18"), "departureAirport" : "MUC", "arrivalAirport" : "SFO", "aircraft" : "Airbus A380", "distance" : 12000, "intercontinental" : true }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be53ee94c6ee38252d0426"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+{
+	"_id" : ObjectId("63be562794c6ee38252d0427"),
+	"departureAirport" : "TXL",
+	"arrivalAirport" : "LHR"
+}
+{
+	"_id" : ObjectId("63be56fb6e538291c43eee18"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+> db.flightData.deleteOne({departureAirport: "TXL"})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be53ee94c6ee38252d0426"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+{
+	"_id" : ObjectId("63be56fb6e538291c43eee18"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+> db.flightData.updateOne({distance: 12000}, {$set: {marker: "delete"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be53ee94c6ee38252d0426"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"marker" : "delete"
+}
+{
+	"_id" : ObjectId("63be56fb6e538291c43eee18"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+> db.flightData.updateMany({}, {$set: {marker: "toDelete"}})
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be53ee94c6ee38252d0426"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"marker" : "toDelete"
+}
+{
+	"_id" : ObjectId("63be56fb6e538291c43eee18"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"marker" : "toDelete"
+}
+> db.flightData.deleteMany({marker: "toDelete"})
+{ "acknowledged" : true, "deletedCount" : 2 }
+> db.flightData.find().pretty()
+> db.flightData.insertMany([
+...   {
+...     "departureAirport": "MUC",
+...     "arrivalAirport": "SFO",
+...     "aircraft": "Airbus A380",
+...     "distance": 12000,
+...     "intercontinental": true
+...   },
+...   {
+...     "departureAirport": "LHR",
+...     "arrivalAirport": "TXL",
+...     "aircraft": "Airbus A320",
+...     "distance": 950,
+...     "intercontinental": false
+...   }
+... ])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("63be5dfd6e538291c43eee19"),
+		ObjectId("63be5dfd6e538291c43eee1a")
+	]
+}
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false
+}
+> db.flightData.find({name: "Queen"})
+> db.flightData.find({intercontinental: true}).pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+> db.flightData.find({distance: {$gt: 10000}})
+{ "_id" : ObjectId("63be5dfd6e538291c43eee19"), "departureAirport" : "MUC", "arrivalAirport" : "SFO", "aircraft" : "Airbus A380", "distance" : 12000, "intercontinental" : true }
+> db.flightData.find({distance: {$gt: 10000}}).pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false
+}
+> db.flightData.updateOne({_id: ObjectId("63be5dfd6e538291c43eee19")},{$set: {delayed: true}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"delayed" : true
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false
+}
+> db.flightData.update({_id: ObjectId("63be5dfd6e538291c43eee19"),"delayed":fal db.flightData.update({_id: ObjectId("63be5dfd6e538291c43eee19"),"delayed":fals
+... 
+... 
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"delayed" : true
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false
+}
+> db.flightData.update({_id: ObjectId("63be5dfd6e538291c43eee19")},{delayed: false})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.flightData.replaceOne({
+...     "departureAirport": "MUC",
+...     "arrivalAirport": "SFO",
+...     "aircraft": "Airbus A380",
+...     "distance": 12000,
+...     "intercontinental": true
+...   })
+uncaught exception: TypeError: can't convert undefined to object :
+DBCollection.prototype.replaceOne@src/mongo/shell/crud_api.js:477:16
+@(shell):1:1
+> db.flightData.replaceOne({_id: ObjectId("63be5dfd6e538291c43eee19")},{
+...     "departureAirport": "MUC",
+...     "arrivalAirport": "SFO",
+...     "aircraft": "Airbus A380",
+...     "distance": 12000,
+...     "intercontinental": true
+...   })
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false
+}
+> db.passengers.insertMany([
+...   {
+...     "name": "Max Schwarzmueller",
+...     "age": 29
+...   },
+...   {
+...     "name": "Manu Lorenz",
+...     "age": 30
+...   },
+...   {
+...     "name": "Chris Hayton",
+...     "age": 35
+...   },
+...   {
+...     "name": "Sandeep Kumar",
+...     "age": 28
+...   },
+...   {
+...     "name": "Maria Jones",
+...     "age": 30
+...   },
+...   {
+...     "name": "Alexandra Maier",
+...     "age": 27
+...   },
+...   {
+...     "name": "Dr. Phil Evans",
+...     "age": 47
+...   },
+...   {
+...     "name": "Sandra Brugge",
+...     "age": 33
+...   },
+...   {
+...     "name": "Elisabeth Mayr",
+...     "age": 29
+...   },
+...   {
+...     "name": "Frank Cube",
+...     "age": 41
+...   },
+...   {
+...     "name": "Karandeep Alun",
+...     "age": 48
+...   },
+...   {
+...     "name": "Michaela Drayer",
+...     "age": 39
+...   },
+...   {
+...     "name": "Bernd Hoftstadt",
+...     "age": 22
+...   },
+...   {
+...     "name": "Scott Tolib",
+...     "age": 44
+...   },
+...   {
+...     "name": "Freddy Melver",
+...     "age": 41
+...   },
+...   {
+...     "name": "Alexis Bohed",
+...     "age": 35
+...   },
+...   {
+...     "name": "Melanie Palace",
+...     "age": 27
+...   },
+...   {
+...     "name": "Armin Glutch",
+...     "age": 35
+...   },
+...   {
+...     "name": "Klaus Arber",
+...     "age": 53
+...   },
+...   {
+...     "name": "Albert Twostone",
+...     "age": 68
+...   },
+...   {
+...     "name": "Gordon Black",
+...     "age": 38
+...   }
+... ])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("63be75876e538291c43eee1b"),
+		ObjectId("63be75876e538291c43eee1c"),
+		ObjectId("63be75876e538291c43eee1d"),
+		ObjectId("63be75876e538291c43eee1e"),
+		ObjectId("63be75876e538291c43eee1f"),
+		ObjectId("63be75876e538291c43eee20"),
+		ObjectId("63be75876e538291c43eee21"),
+		ObjectId("63be75876e538291c43eee22"),
+		ObjectId("63be75876e538291c43eee23"),
+		ObjectId("63be75876e538291c43eee24"),
+		ObjectId("63be75876e538291c43eee25"),
+		ObjectId("63be75876e538291c43eee26"),
+		ObjectId("63be75876e538291c43eee27"),
+		ObjectId("63be75876e538291c43eee28"),
+		ObjectId("63be75876e538291c43eee29"),
+		ObjectId("63be75876e538291c43eee2a"),
+		ObjectId("63be75876e538291c43eee2b"),
+		ObjectId("63be75876e538291c43eee2c"),
+		ObjectId("63be75876e538291c43eee2d"),
+		ObjectId("63be75876e538291c43eee2e"),
+		ObjectId("63be75876e538291c43eee2f")
+	]
+}
+> db.passengers.find().pretty()
+{
+	"_id" : ObjectId("63be75876e538291c43eee1b"),
+	"name" : "Max Schwarzmueller",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1c"),
+	"name" : "Manu Lorenz",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1d"),
+	"name" : "Chris Hayton",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1e"),
+	"name" : "Sandeep Kumar",
+	"age" : 28
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1f"),
+	"name" : "Maria Jones",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee20"),
+	"name" : "Alexandra Maier",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee21"),
+	"name" : "Dr. Phil Evans",
+	"age" : 47
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee22"),
+	"name" : "Sandra Brugge",
+	"age" : 33
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee23"),
+	"name" : "Elisabeth Mayr",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee24"),
+	"name" : "Frank Cube",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee25"),
+	"name" : "Karandeep Alun",
+	"age" : 48
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee26"),
+	"name" : "Michaela Drayer",
+	"age" : 39
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee27"),
+	"name" : "Bernd Hoftstadt",
+	"age" : 22
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee28"),
+	"name" : "Scott Tolib",
+	"age" : 44
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee29"),
+	"name" : "Freddy Melver",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2a"),
+	"name" : "Alexis Bohed",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2b"),
+	"name" : "Melanie Palace",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2c"),
+	"name" : "Armin Glutch",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2d"),
+	"name" : "Klaus Arber",
+	"age" : 53
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2e"),
+	"name" : "Albert Twostone",
+	"age" : 68
+}
+Type "it" for more
+> it
+{
+	"_id" : ObjectId("63be75876e538291c43eee2f"),
+	"name" : "Gordon Black",
+	"age" : 38
+}
+> db.passengers.find().toArray()
+[
+	{
+		"_id" : ObjectId("63be75876e538291c43eee1b"),
+		"name" : "Max Schwarzmueller",
+		"age" : 29
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee1c"),
+		"name" : "Manu Lorenz",
+		"age" : 30
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee1d"),
+		"name" : "Chris Hayton",
+		"age" : 35
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee1e"),
+		"name" : "Sandeep Kumar",
+		"age" : 28
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee1f"),
+		"name" : "Maria Jones",
+		"age" : 30
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee20"),
+		"name" : "Alexandra Maier",
+		"age" : 27
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee21"),
+		"name" : "Dr. Phil Evans",
+		"age" : 47
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee22"),
+		"name" : "Sandra Brugge",
+		"age" : 33
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee23"),
+		"name" : "Elisabeth Mayr",
+		"age" : 29
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee24"),
+		"name" : "Frank Cube",
+		"age" : 41
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee25"),
+		"name" : "Karandeep Alun",
+		"age" : 48
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee26"),
+		"name" : "Michaela Drayer",
+		"age" : 39
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee27"),
+		"name" : "Bernd Hoftstadt",
+		"age" : 22
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee28"),
+		"name" : "Scott Tolib",
+		"age" : 44
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee29"),
+		"name" : "Freddy Melver",
+		"age" : 41
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee2a"),
+		"name" : "Alexis Bohed",
+		"age" : 35
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee2b"),
+		"name" : "Melanie Palace",
+		"age" : 27
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee2c"),
+		"name" : "Armin Glutch",
+		"age" : 35
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee2d"),
+		"name" : "Klaus Arber",
+		"age" : 53
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee2e"),
+		"name" : "Albert Twostone",
+		"age" : 68
+	},
+	{
+		"_id" : ObjectId("63be75876e538291c43eee2f"),
+		"name" : "Gordon Black",
+		"age" : 38
+	}
+]
+> db.passengers.find().forEach((passengersData)=>{printjson(passengerData)})
+uncaught exception: ReferenceError: passengerData is not defined :
+@(shell):1:49
+DBQuery.prototype.forEach@src/mongo/shell/query.js:514:9
+@(shell):1:1
+> db.passengers.find().forEach((passengersData)=>{printjson(passengersData)})
+{
+	"_id" : ObjectId("63be75876e538291c43eee1b"),
+	"name" : "Max Schwarzmueller",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1c"),
+	"name" : "Manu Lorenz",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1d"),
+	"name" : "Chris Hayton",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1e"),
+	"name" : "Sandeep Kumar",
+	"age" : 28
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1f"),
+	"name" : "Maria Jones",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee20"),
+	"name" : "Alexandra Maier",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee21"),
+	"name" : "Dr. Phil Evans",
+	"age" : 47
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee22"),
+	"name" : "Sandra Brugge",
+	"age" : 33
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee23"),
+	"name" : "Elisabeth Mayr",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee24"),
+	"name" : "Frank Cube",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee25"),
+	"name" : "Karandeep Alun",
+	"age" : 48
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee26"),
+	"name" : "Michaela Drayer",
+	"age" : 39
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee27"),
+	"name" : "Bernd Hoftstadt",
+	"age" : 22
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee28"),
+	"name" : "Scott Tolib",
+	"age" : 44
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee29"),
+	"name" : "Freddy Melver",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2a"),
+	"name" : "Alexis Bohed",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2b"),
+	"name" : "Melanie Palace",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2c"),
+	"name" : "Armin Glutch",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2d"),
+	"name" : "Klaus Arber",
+	"age" : 53
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2e"),
+	"name" : "Albert Twostone",
+	"age" : 68
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2f"),
+	"name" : "Gordon Black",
+	"age" : 38
+}
+> db.passengers.find({},{name: 1}).pretty()
+{
+	"_id" : ObjectId("63be75876e538291c43eee1b"),
+	"name" : "Max Schwarzmueller"
+}
+{ "_id" : ObjectId("63be75876e538291c43eee1c"), "name" : "Manu Lorenz" }
+{ "_id" : ObjectId("63be75876e538291c43eee1d"), "name" : "Chris Hayton" }
+{ "_id" : ObjectId("63be75876e538291c43eee1e"), "name" : "Sandeep Kumar" }
+{ "_id" : ObjectId("63be75876e538291c43eee1f"), "name" : "Maria Jones" }
+{ "_id" : ObjectId("63be75876e538291c43eee20"), "name" : "Alexandra Maier" }
+{ "_id" : ObjectId("63be75876e538291c43eee21"), "name" : "Dr. Phil Evans" }
+{ "_id" : ObjectId("63be75876e538291c43eee22"), "name" : "Sandra Brugge" }
+{ "_id" : ObjectId("63be75876e538291c43eee23"), "name" : "Elisabeth Mayr" }
+{ "_id" : ObjectId("63be75876e538291c43eee24"), "name" : "Frank Cube" }
+{ "_id" : ObjectId("63be75876e538291c43eee25"), "name" : "Karandeep Alun" }
+{ "_id" : ObjectId("63be75876e538291c43eee26"), "name" : "Michaela Drayer" }
+{ "_id" : ObjectId("63be75876e538291c43eee27"), "name" : "Bernd Hoftstadt" }
+{ "_id" : ObjectId("63be75876e538291c43eee28"), "name" : "Scott Tolib" }
+{ "_id" : ObjectId("63be75876e538291c43eee29"), "name" : "Freddy Melver" }
+{ "_id" : ObjectId("63be75876e538291c43eee2a"), "name" : "Alexis Bohed" }
+{ "_id" : ObjectId("63be75876e538291c43eee2b"), "name" : "Melanie Palace" }
+{ "_id" : ObjectId("63be75876e538291c43eee2c"), "name" : "Armin Glutch" }
+{ "_id" : ObjectId("63be75876e538291c43eee2d"), "name" : "Klaus Arber" }
+{ "_id" : ObjectId("63be75876e538291c43eee2e"), "name" : "Albert Twostone" }
+Type "it" for more
+> db.passengers.find({},{name: 1, _id: 0}).pretty()
+{ "name" : "Max Schwarzmueller" }
+{ "name" : "Manu Lorenz" }
+{ "name" : "Chris Hayton" }
+{ "name" : "Sandeep Kumar" }
+{ "name" : "Maria Jones" }
+{ "name" : "Alexandra Maier" }
+{ "name" : "Dr. Phil Evans" }
+{ "name" : "Sandra Brugge" }
+{ "name" : "Elisabeth Mayr" }
+{ "name" : "Frank Cube" }
+{ "name" : "Karandeep Alun" }
+{ "name" : "Michaela Drayer" }
+{ "name" : "Bernd Hoftstadt" }
+{ "name" : "Scott Tolib" }
+{ db.flightData.updateMany({},{$set: {status: {description: "on_time", lastUpdate
+... 
+..db.flightData.updateMany({},{$set: {status: {description: "on-time",lastUpdate: "1 hour ago"}
+... 
+... 
+> db.flightData.updateMany({},{$set: {status: {description: "on-time", lastUpdate: "1 hour ago"}}})
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+> db.passengers.find().pretty()
+{
+	"_id" : ObjectId("63be75876e538291c43eee1b"),
+	"name" : "Max Schwarzmueller",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1c"),
+	"name" : "Manu Lorenz",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1d"),
+	"name" : "Chris Hayton",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1e"),
+	"name" : "Sandeep Kumar",
+	"age" : 28
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1f"),
+	"name" : "Maria Jones",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee20"),
+	"name" : "Alexandra Maier",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee21"),
+	"name" : "Dr. Phil Evans",
+	"age" : 47
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee22"),
+	"name" : "Sandra Brugge",
+	"age" : 33
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee23"),
+	"name" : "Elisabeth Mayr",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee24"),
+	"name" : "Frank Cube",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee25"),
+	"name" : "Karandeep Alun",
+	"age" : 48
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee26"),
+	"name" : "Michaela Drayer",
+	"age" : 39
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee27"),
+	"name" : "Bernd Hoftstadt",
+	"age" : 22
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee28"),
+	"name" : "Scott Tolib",
+	"age" : 44
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee29"),
+	"name" : "Freddy Melver",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2a"),
+	"name" : "Alexis Bohed",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2b"),
+	"name" : "Melanie Palace",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2c"),
+	"name" : "Armin Glutch",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2d"),
+	"name" : "Klaus Arber",
+	"age" : 53
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2e"),
+	"name" : "Albert Twostone",
+	"age" : 68
+}
+Type "it" for more
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"status" : {
+		"description" : "on-time",
+		"lastUpdate" : "1 hour ago"
+	}
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false,
+	"status" : {
+		"description" : "on-time",
+		"lastUpdate" : "1 hour ago"
+	}
+}
+> db.passengers.updateOne({name: "Albert Twostone"},{$set: {hobbies:["sports","cooking"]}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.flightData.find().pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"status" : {
+		"description" : "on-time",
+		"lastUpdate" : "1 hour ago"
+	}
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false,
+	"status" : {
+		"description" : "on-time",
+		"lastUpdate" : "1 hour ago"
+	}
+}
+> db.passengers.find().pretty()
+{
+	"_id" : ObjectId("63be75876e538291c43eee1b"),
+	"name" : "Max Schwarzmueller",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1c"),
+	"name" : "Manu Lorenz",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1d"),
+	"name" : "Chris Hayton",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1e"),
+	"name" : "Sandeep Kumar",
+	"age" : 28
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee1f"),
+	"name" : "Maria Jones",
+	"age" : 30
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee20"),
+	"name" : "Alexandra Maier",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee21"),
+	"name" : "Dr. Phil Evans",
+	"age" : 47
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee22"),
+	"name" : "Sandra Brugge",
+	"age" : 33
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee23"),
+	"name" : "Elisabeth Mayr",
+	"age" : 29
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee24"),
+	"name" : "Frank Cube",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee25"),
+	"name" : "Karandeep Alun",
+	"age" : 48
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee26"),
+	"name" : "Michaela Drayer",
+	"age" : 39
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee27"),
+	"name" : "Bernd Hoftstadt",
+	"age" : 22
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee28"),
+	"name" : "Scott Tolib",
+	"age" : 44
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee29"),
+	"name" : "Freddy Melver",
+	"age" : 41
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2a"),
+	"name" : "Alexis Bohed",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2b"),
+	"name" : "Melanie Palace",
+	"age" : 27
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2c"),
+	"name" : "Armin Glutch",
+	"age" : 35
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2d"),
+	"name" : "Klaus Arber",
+	"age" : 53
+}
+{
+	"_id" : ObjectId("63be75876e538291c43eee2e"),
+	"name" : "Albert Twostone",
+	"age" : 68,
+	"hobbies" : [
+		"sports",
+		"cooking"
+	]
+}
+Type "it" for more
+> db.passengers.find({name: "Albert Twostone"}).pretty()
+{
+	"_id" : ObjectId("63be75876e538291c43eee2e"),
+	"name" : "Albert Twostone",
+	"age" : 68,
+	"hobbies" : [
+		"sports",
+		"cooking"
+	]
+}
+> db.passengers.findOne({name: "Albert twostone"}).hobbies
+uncaught exception: TypeError: db.passengers.findOne(...) is null :
+@(shell):1:1
+> db.passengers.findOne({name: "Albert Twostone"}).hobbies
+[ "sports", "cooking" ]
+> db.passengers.find({hobbies: "sports"}).pretty()
+{
+	"_id" : ObjectId("63be75876e538291c43eee2e"),
+	"name" : "Albert Twostone",
+	"age" : 68,
+	"hobbies" : [
+		"sports",
+		"cooking"
+	]
+}
+> db.flightData.find({"status.description": "on_time"}).pretty()
+> db.flightData.find({"status.description": "on_time"}).pretty()
+> 
+> 
+> 
+> 
+> 
+> db.flightData.find({"status,description": "on-time"}).pretty()
+> db.flightData.find({"status.description": "on-time"}).pretty()
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee19"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true,
+	"status" : {
+		"description" : "on-time",
+		"lastUpdate" : "1 hour ago"
+	}
+}
+{
+	"_id" : ObjectId("63be5dfd6e538291c43eee1a"),
+	"departureAirport" : "LHR",
+	"arrivalAirport" : "TXL",
+	"aircraft" : "Airbus A320",
+	"distance" : 950,
+	"intercontinental" : false,
+	"status" : {
+		"description" : "on-time",
+		"lastUpdate" : "1 hour ago"
+	}
+}
+>  show dbs
+admin    0.000GB
+config   0.000GB
+flights  0.000GB
+local    0.000GB
+patient  0.000GB
+shop     0.000GB
+> use flights
+switched to db flights
+> db.dropDatabase()
+{ "ok" : 1 }
+> use patients
+switched to db patients
+> db.dropDatabase()
+{ "ok" : 1 }
+> use shop
+switched to db shop
+> db.dropDatabase;
+function(writeConcern) {
+    return this._dbCommand(
+        {dropDatabase: 1, writeConcern: writeConcern ? writeConcern : _defaultWriteConcern});
+}
+> db.dropDatabase()
+{ "ok" : 1 }
+> show dbs
+admin    0.000GB
+config   0.000GB
+local    0.000GB
+patient  0.000GB
+> use patient
+switched to db patient
+> db.dropDatabase()
+{ "ok" : 1 }
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use shop
+switched to db shop
+> db.products.insertOne({name: "A book",price: 12.99})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be99fd6e538291c43eee30")
+}
+> db.products.insertOne({title: "T-shirt",seller: {name:"Max", age:29}})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be9a8f6e538291c43eee31")
+}
+> db.products.find().pretty()
+{
+	"_id" : ObjectId("63be99fd6e538291c43eee30"),
+	"name" : "A book",
+	"price" : 12.99
+}
+{
+	"_id" : ObjectId("63be9a8f6e538291c43eee31"),
+	"title" : "T-shirt",
+	"seller" : {
+		"name" : "Max",
+		"age" : 29
+	}
+}
+> db.products.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 2 }
+> db.products.insertOne({name: "A book", price: 12.99})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be9bc86e538291c43eee32")
+}
+> db.products.insertOne({name: "A shirt", price: 20.99})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be9c0b6e538291c43eee33")
+}
+> db.products.find().pretty()
+{
+	"_id" : ObjectId("63be9bc86e538291c43eee32"),
+	"name" : "A book",
+	"price" : 12.99
+} db.products.insertOne({name: "A computer",price: 2199.99,details: {s}})
+uncaught exception: ReferenceError: s is not defined :
+@(shell):1:68
+> 
+> db.products.insertOne({name: "A computer", price: 1229.99, })
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be9cfd6e538291c43eee34")
+}
+> db.products.insertOne({name: "A computer", price: 1229.99, })
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be9d0a6e538291c43eee35")
+}
+> db.products.insertOne({name: "A computer", price: 1229.99, details:{cpu: "Intel i7 8770"}})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63be9d5d6e538291c43eee36")
+}
+> db.products.find().pretty()
+{
+	"_id" : ObjectId("63be9bc86e538291c43eee32"),
+	"name" : "A book",
+	"price" : 12.99
+}
+{
+	"_id" : ObjectId("63be9c0b6e538291c43eee33"),
+	"name" : "A shirt",
+	"price" : 20.99
+}
+{
+	"_id" : ObjectId("63be9cfd6e538291c43eee34"),
+	"name" : "A computer",
+	"price" : 1229.99
+}
+{
+	"_id" : ObjectId("63be9d0a6e538291c43eee35"),
+	"name" : "A computer",
+	"price" : 1229.99
+}
+{
+	"_id" : ObjectId("63be9d5d6e538291c43eee36"),
+	"name" : "A computer",
+	"price" : 1229.99,
+	"details" : {
+		"cpu" : "Intel i7 8770"
+	}
+}
+> db.products.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 5 }
+> db.products.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 0 }
+> db.products.insertOne({name: "A book", price: 12.99, details: null})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bea4656e538291c43eee37")
+}
+> db.products.find().pretty()
+{
+	"_id" : ObjectId("63bea4656e538291c43eee37"),
+	"name" : "A book",
+	"price" : 12.99,
+	"details" : null
+}
+> db.products.insertOne({name: "A computer", price: 1229.99, details:{cpu: "Intel i7 8770"}})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bea49b6e538291c43eee38")
+}
+> db.products.find().pretty()
+{
+	"_id" : ObjectId("63bea4656e538291c43eee37"),
+	"name" : "A book",
+	"price" : 12.99,
+	"details" : null
+}
+{
+	"_id" : ObjectId("63bea49b6e538291c43eee38"),
+	"name" : "A computer",
+	"price" : 1229.99,
+	"details" : {
+  db.companies.insertOne({name: "Fresh Apple Inc", isStartup: true, em})
+uncaught exception: ReferenceError: em is not defined :
+@(shell):1:67
+> 
+> db.companies.insertOne({name:"Fresh Apple Inc", isStartup: true,employees:33,funding:12345678901234567890,details: {ceo: "Mark Super"}, tags: [{title: "super"},{title:"perfect"}],foundingDate: new Date(), insertedAt: new Timestamp()})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63beab906e538291c43eee39")
+}
+> db.companies.findOne()
+{
+	"_id" : ObjectId("63beab906e538291c43eee39"),
+	"name" : "Fresh Apple Inc",
+	"isStartup" : true,
+	"employees" : 33,
+	"funding" : 12345678901234567000,
+	"details" : {
+		"ceo" : "Mark Super"
+	},
+	"tags" : [
+		{
+			"title" : "super"
+		},
+		{
+			"title" : "perfect"
+		}
+	],
+	"foundingDate" : ISODate("2023-01-11T12:29:04.375Z"),
+	"insertedAt" : Timestamp(1673440144, 1)
+}
+> 
+
+
