@@ -1,0 +1,633 @@
+> show dbs
+admin        0.000GB
+companyData  0.000GB
+config       0.000GB
+local        0.000GB
+shop         0.000GB
+> use companyData
+switched to db companyData
+> db.companies.findOne()
+{
+	"_id" : ObjectId("63beab906e538291c43eee39"),
+	"name" : "Fresh Apple Inc",
+	"isStartup" : true,
+	"employees" : 33,
+	"funding" : 12345678901234567000,
+	"details" : {
+		"ceo" : "Mark Super"
+	},
+	"tags" : [
+		{
+			"title" : "super"
+		},
+		{
+			"title" : "perfect"
+		}
+	],
+	"foundingDate" : ISODate("2023-01-11T12:29:04.375Z"),
+	"insertedAt" : Timestamp(1673440144, 1)
+}
+> dn.numbers.insertOne({a: 1})
+uncaught exception: ReferenceError: dn is not defined :
+@(shell):1:1
+> db.numbers.insertOne({a: 1})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf87c5172c2958ab17e3e6")
+}
+> db.numbers.findOne()
+{ "_id" : ObjectId("63bf87c5172c2958ab17e3e6"), "a" : 1 }
+> db.companies.drop()
+true
+> db.stats()
+{
+	"db" : "companyData",
+	"collections" : 1,
+	"views" : 0,
+	"objects" : 1,
+	"avgObjSize" : 33,
+	"dataSize" : 33,
+	"storageSize" : 20480,
+	"indexes" : 1,
+	"indexSize" : 20480,
+	"totalSize" : 40960,
+	"scaleFactor" : 1,
+	"fsUsedSize" : 51923939328,
+	"fsTotalSize" : 242951708672,
+	"ok" : 1
+}
+> db.numbers.insertOne({a : NumberInt(1)})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf88bf172c2958ab17e3e7")
+}
+> db.stats()
+{
+	"db" : "companyData",
+	"collections" : 1,
+	"views" : 0,
+	"objects" : 2,
+	"avgObjSize" : 31,
+	"dataSize" : 62,
+	"storageSize" : 20480,
+	"indexes" : 1,
+	"indexSize" : 20480,
+	"totalSize" : 40960,
+	"scaleFactor" : 1,
+	"fsUsedSize" : 51912044544,
+	"fsTotalSize" : 242951708672,
+	"ok" : 1
+}
+> typeOf db.numbers.findOne().a
+uncaught exception: SyntaxError: unexpected token: identifier :
+@(shell):1:7
+> typeof db.numbers.findOne().a
+number
+> use hospital
+switched to db hospital
+> db.patients.insertOne({name: "Max", age: 29, diseaseSummary: "summary-max-1"})
+
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf8ca4172c2958ab17e3e8")
+}
+> db.patients.findOne()
+{
+	"_id" : ObjectId("63bf8ca4172c2958ab17e3e8"),
+	"name" : "Max",
+	"age" : 29,
+	"diseaseSummary" : "summary-max-1"
+}
+> db.diseaseSummaries.insertOne({_id: "summary-max-1", diseases: ["cold","broken leg"]})
+{ "acknowledged" : true, "insertedId" : "summary-max-1" }
+> db.diseaseSummaries.findOne()
+{ "_id" : "summary-max-1", "diseases" : [ "cold", "broken leg" ] }
+> db.patients.findOne()
+{
+	"_id" : ObjectId("63bf8ca4172c2958ab17e3e8"),
+	"name" : "Max",
+	"age" : 29,
+	"diseaseSummary" : "summary-max-1"
+}
+> db.patients.findOne().diseaseSummary
+summary-max-1
+> var dsid = db.patients.findOne().diseaseSummary
+> dsid
+summary-max-1
+> db.diseaseSummaries.findOne({_id: dsid})
+{ "_id" : "summary-max-1", "diseases" : [ "cold", "broken leg" ] }
+> db.patients.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.patients.insertOne({name: "Max", age: 29, diseaseSummary: {diseases: ["cold","brokrn leg"]}})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf9028172c2958ab17e3e9")
+}
+> db.patients.findOne()
+{
+	"_id" : ObjectId("63bf9028172c2958ab17e3e9"),
+	"name" : "Max",
+	"age" : 29,
+	"diseaseSummary" : {
+		"diseases" : [
+			"cold",
+			"brokrn leg"
+		]
+	}
+}
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> use carData
+switched to db carData
+> db.persons.insertOne({name: "Max", car: {model: "BMW",price: 40000}})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf912e172c2958ab17e3ea")
+}
+> db.persons.findOne()
+{
+	"_id" : ObjectId("63bf912e172c2958ab17e3ea"),
+	"name" : "Max",
+	"car" : {
+		"model" : "BMW",
+		"price" : 40000
+	}
+}
+> db.persons.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.persons.insertOne({name: "Max", age: 29, salary: 3000})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf9210172c2958ab17e3eb")
+}
+> db.cars.insertOne({model: "BMW", price: 40000, owner: ObjectId("63bf912e172c2958ab17e3ea")})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf9279172c2958ab17e3ec")
+}
+> 
+> 
+> 
+> 
+> 
+> 
+> use support
+switched to db support
+> db.questionThreads.insertOne({creator: "Max", question: "How does that all work", answers: ["q1a1","q1a2"]})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf9339172c2958ab17e3ed")
+}
+> db.questionThreads.findOne()
+{
+	"_id" : ObjectId("63bf9339172c2958ab17e3ed"),
+	"creator" : "Max",
+	"question" : "How does that all work",
+	"answers" : [
+		"q1a1",
+		"q1a2"
+	]
+}
+> db.answers.insertMany([{_id: "q1a1", text: "It works like that."},{_id: "q1a2", text: "Thanks!"}])
+{ "acknowledged" : true, "insertedIds" : [ "q1a1", "q1a2" ] }
+> db.answers.find()
+{ "_id" : "q1a1", "text" : "It works like that." }
+{ "_id" : "q1a2", "text" : "Thanks!" }
+> 
+> db.questionThreads.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.questionThreads.insertOne({creator: "Max", question: "How does that all work?", answers: [{text: "Like that."}, {text: "Thanks!"}]})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bf954d172c2958ab17e3ee")
+}
+> db.questionThreads.findOne()
+{
+	"_id" : ObjectId("63bf954d172c2958ab17e3ee"),
+	"creator" : "Max",
+	"question" : "How does that all work?",
+	"answers" : [
+		{
+			"text" : "Like that."
+		},
+		{
+			"text" : "Thanks!"
+		}
+	]
+}
+> use cityData
+switched to db cityData
+> db.cities.insertOne({name: "New York City", coordinates: {lat: 21, lng: 55}})
+{
+	"acknowledged" : true,
+  db.citizens.insertMany([{name: "Queeny Jain",cityId: ObjectId("63bf9722172c2958ab17e3ef")})
+... 
+... 
+> 
+> db.citizens.insertMany([{name: "Queeny Jain", cityId: ObjectId("63bf9db.citizens.insertMany([{name: "Queeny Jain", cityId: ObjectId("63bf9722172c2958ab17e3ef")}])
+[1]+  Stopped                 mongo
+queeny@administrator-OptiPlex-3050:~$ mongo
+MongoDB shell version v5.0.14
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("dbace32f-b012-4b17-af1a-6432db3ae7b7") }
+MongoDB server version: 5.0.14
+================
+Warning: the "mongo" shell has been superseded by "mongosh",
+which delivers improved usability and compatibility.The "mongo" shell has been deprecated and will be removed in
+an upcoming release.
+For installation instructions, see
+https://docs.mongodb.com/mongodb-shell/install/
+================
+---
+The server generated these startup warnings when booting: 
+        2023-01-12T09:10:34.429+05:30: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+        2023-01-12T09:10:35.216+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> show dbs
+admin        0.000GB
+carData      0.000GB
+cityData     0.000GB
+companyData  0.000GB
+config       0.000GB
+hospital     0.000GB
+local        0.000GB
+shop         0.000GB
+support      0.000GB
+> use shop
+switched to db shop
+> db.dropDatabase()
+{ "ok" : 1 }
+> show dbs
+admin        0.000GB
+carData      0.000GB
+cityData     0.000GB
+companyData  0.000GB
+config       0.000GB
+hospital     0.000GB
+local        0.000GB
+support      0.000GB
+> use shop
+switched to db shop
+> db.products.insertOne({title: "A book", price: 12.99})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bfa1e0783ba62a2308ab1a")
+}
+> db.customers.insertOne({name: "Max", age: 29})
+{
+	"acknowledged" : true,
+  db.orders.insertOne({productId: ObjectId("6"), customerIVd: ObjectId: ()})
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:68
+> 
+> use bookRegistry
+switched to db bookRegistry
+> db.books.insertOne({name: "My favorite book", authors: [{name: "Max Schwarz", age: 29},{name: "Manuel Lor",age: 31}]})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63bfa523783ba62a2308ab1c")
+}
+> db.books.find().pretty()
+{
+	"_id" : ObjectId("63bfa523783ba62a2308ab1c"),
+	"name" : "My favorite book",
+	"authors" : [
+		{
+			"name" : "Max Schwarz",
+			"age" : 29
+		},
+		{
+			"name" : "Manuel Lor",
+			"age" : 31
+		}
+	]
+}
+> db.authors.insertMany([{name: "Max Schwarz",age: 29, address: {street: "Main"}},{name: "Manuel Lor",age: 30, address: {street: "Tree"}}])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("63bfa656783ba62a2308ab1d"),
+		ObjectId("63bfa656783ba62a2308ab1e")
+	]
+}
+> db.authors.find().pretty()
+{
+	"_id" : ObjectId("63bfa656783ba62a2308ab1d"),
+	"name" : "Max Schwarz",
+	"age" : 29,
+	"address" : {
+		"street" : "Main"
+	}
+}
+{
+	"_id" : ObjectId("63bfa656783ba62a2308ab1e"),
+	"name" : "Manuel Lor",
+	"age" : 30,
+	"address" : {
+		"street" : "Tree"
+	}
+}
+> db.books.updateOne({}, {$set: {authors: [ObjectId("63bfa656783ba62a2308ab1d"), OebjtI]}})
+undb.books.updateOne({},{$set: {authors: [ObjectId("63bfa656783ba62a2308ab1d"),ObjectId()]}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.books.find().pretty()
+{
+	"_id" : ObjectId("63bfa523783ba62a2308ab1c"),
+	"name" : "My favorite book",
+	"authors" : [
+		ObjectId("63bfa656783ba62a2308ab1d"),
+		ObjectId("63bfa7b5783ba62a2308ab1f")
+	]
+}
+> db.books.updateOne({},{$set: {authors: [ObjectId("63bfa656783ba62a2308ab1d"),ObjectId("63bfa656783ba62a2308ab1e")]}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.books.find().pretty()
+{
+	"_id" : ObjectId("63bfa523783ba62a2308ab1c"),
+	"name" : "My favorite book",
+	"authors" : [
+		ObjectId("63bfa656783ba62a2308ab1d"),
+		ObjectId("63bfa656783ba62a2308ab1e")
+	]
+}
+> db.books.aggregate([{$lookup: {from: "authors",localField: "authors", foreignField: "_}}]) db.books.aggregate([{$lookup: {from: "authors",localField: "authors", foreignField: "_i}}])db.books.aggregate([{$lookup: {from: "authors",localField: "authors", foreignField: "_id}}]db.books.aggregate([{$lookup: {from: "authors",localField: "authors", foreignField: "_id}}])
+uncaught exception: SyntaxError: "" literal not terminated before end of script :
+@(shell):1:92
+> db.books.aggregate([{$lookup: {from: "authors", localField: "authors", foreignField: "_id", as: "creators"}}])
+{ "_id" : ObjectId("63bfa523783ba62a2308ab1c"), "name" : "My favorite book", "authors" : [ ObjectId("63bfa656783ba62a2308ab1d"), ObjectId("63bfa656783ba62a2308ab1e") ], "creators" : [ { "_id" : ObjectId("63bfa656783ba62a2308ab1d"), "name" : "Max Schwarz", "age" : 29, "address" : { "street" : "Main" } }, { "_id" : ObjectId("63bfa656783ba62a2308ab1e"), "name" : "Manuel Lor", "age" : 30, "address" : { "street" : "Tree" } } ] }
+> db.books.aggregate([{$lookup: {from: "authors", localField: "authors", foreignField: "_id", as: "creators"}}]).pretty()
+{
+	"_id" : ObjectId("63bfa523783ba62a2308ab1c"),
+	"name" : "My favorite book",
+	"authors" : [
+		ObjectId("63bfa656783ba62a2308ab1d"),
+		ObjectId("63bfa656783ba62a2308ab1e")
+	],
+	"creators" : [
+		{
+			"_id" : ObjectId("63bfa656783ba62a2308ab1d"),
+			"name" : "Max Schwarz",
+			"age" : 29,
+			"address" : {
+				"street" : "Main"
+			}
+		},
+		{
+			"_id" : ObjectId("63bfa656783ba62a2308ab1e"),
+			"name" : "Manuel Lor",
+			"age" : 30,
+			"address" : {
+				"street" : "Tree"
+			}
+		}
+	]
+}
+
+
+> use blog
+switched to db blog
+> db.users.insertMany([{name: "Queeny Jain", age: 29, email: "queenyjain@gmail.com"}, {name: "Ishank Modi", age: 30, email: "ishank@gmail.com"}])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("63bfb5f8b022a1902892415b"),
+		ObjectId("63bfb5f8b022a1902892415c")
+	]
+}
+> db.users.find().pretty()
+{
+	"_id" : ObjectId("63bfb305736673aad603d505"),
+	"name" : "Queeny Jain",
+	"age" : 29,
+	"email" : "queenyjain@gmail.com"
+}
+{
+	"_id" : ObjectId("63bfb305736673aad603d506"),
+	"name" : "Ishank Modi",
+	"age" : 30,
+	"email" : "ishank@gmail.com"
+}
+{
+	"_id" : ObjectId("63bfb337736673aad603d507"),
+	"name" : "Queeny Jain",
+	"age" : 29,
+	"email" : "queenyjain@gmail.com"
+}
+{
+	"_id" : ObjectId("63bfb337736673aad603d508"),
+	"name" : "Ishank Modi",
+	"age" : 30,
+	"email" : "ishank@gmail.com"
+}
+{
+	"_id" : ObjectId("63bfb5f8b022a1902892415b"),
+	"name" : "Queeny Jain",
+	"age" : 29,
+	"email" : "queenyjain@gmail.com"
+}
+{
+	"_id" : ObjectId("63bfb5f8b022a1902892415c"),
+	"name" : "Ishank Modi",
+	"age" : 30,
+	"email" : "ishank@gmail.com"
+}
+> db.posts.insertOne({title: "My first Post!",text: "This is my first post, I hope you all enjoy it", tags: ["new","tech"],creator: ObjectId("63bfb305736673aad603d505"), comments: [{text; "I like this post",author: ObjectId("63bfb305736673aad603d506")}]})
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:184
+> db.createCollection("posts",{validator: {$jsonSchema:{bsonType: "object",requi}}})
+undb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", required: []}}})
+{
+	"ok" : 0,
+	"errmsg" : "$jsonSchema keyword 'required' cannot be an empty array",
+	"code" : 9,
+	"codeName" : "FailedToParse"
+}
+> db.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", requireddb.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", required: ["title]}}})
+uncaught exception: SyntaxError: "" literal not terminated before end of script :
+@(shell):1:98
+> 
+> 
+> db.createCollection("posts", {validator: {$jsonSchema: {bsonType: "object", required: ["title","text"]}}})
+{ "ok" : 1 }
+> db.createCollection('posts',{
+...     validator: {
+...         $jsonSchema: {
+...             bsonType: 'object',
+...             required: ['title','text','creator','comments'],
+...             properties: {
+...                 title: {
+...                     bsonType: "string",
+...                     description: "must be a string and is required"
+...                 },
+...                 text: {
+...                     bsonType: "string",
+...                     description: "must be a string and is required"
+...                 },
+...                 creator: {
+...                     bsonType: "objectid",
+...                     description: "must be an objectid and is required"
+...                 },
+...                 comments: {
+...                     bsonType: "array",
+...                     description: "must be an array and is required",
+...                     items: {
+...                         bsonType: "object",
+...                         required: ["text","author"],
+...                         properties: {
+...                             text: {
+...                                 bsonType: "string",
+...                                 description: "must be a string and is required"
+...                             },
+...                             author: {
+...                                 bsonType: "objectid",
+...                                 description: "must be an objectid and is required"
+...                             }
+...                         }
+...                     }
+...                 }
+...             }
+...         }
+...     }
+... })
+{
+	"ok" : 0,
+	"errmsg" : "Collection already exists. NS: blog.posts",
+	"code" : 48,
+	"codeName" : "NamespaceExists"
+}
+> show dbs
+admin         0.000GB
+blog          0.000GB
+bookRegistry  0.000GB
+carData       0.000GB
+cityData      0.000GB
+companyData   0.000GB
+config        0.000GB
+hospital      0.000GB
+local         0.000GB
+shop          0.000GB
+support       0.000GB
+> use blog
+switched to db blog
+> db.dropDatabase()
+{ "ok" : 1 }
+> show dbs
+admin         0.000GB
+bookRegistry  0.000GB
+carData       0.000GB
+cityData      0.000GB
+companyData   0.000GB
+config        0.000GB
+hospital      0.000GB
+local         0.000GB
+shop          0.000GB
+support       0.000GB
+> use blog
+switched to db blog
+> db.createCollection('posts',{
+...     validator: {
+...         $jsonSchema: {
+...             bsonType: 'object',
+...             required: ['title','text','creator','comments'],
+...             properties: {
+...                 title: {
+...                     bsonType: "string",
+...                     description: "must be a string and is required"
+...                 },
+...                 text: {
+...                     bsonType: "string",
+...                     description: "must be a string and is required"
+...                 },
+...                 creator: {
+...                     bsonType: "objectId",
+...                     description: "must be an objectid and is required"
+...                 },
+...                 comments: {
+...                     bsonType: "array",
+...                     description: "must be an array and is required",
+...                     items: {
+...                         bsonType: "object",
+...                         required: ["text","author"],
+...                         properties: {
+...                             text: {
+...                                 bsonType: "string",
+...                                 description: "must be a string and is required"
+...                             },
+...                             author: {
+...                                 bsonType: "objectId",
+...                                 description: "must be an objectid and is required"
+...                             }
+...                         }
+...                     }
+...                 }
+...             }
+...         }
+...     }
+... })
+{ "ok" : 1 }
+> db.posts.findOne()
+null
+> db.runCommand({
+...   collMod: 'posts',
+...   validator: {
+...     $jsonSchema: {
+...       bsonType: 'object',
+...       required: ['title', 'text', 'creator', 'comments'],
+...       properties: {
+...         title: {
+...           bsonType: 'string',
+...           description: 'must be a string and is required'
+...         },
+...         text: {
+...           bsonType: 'string',
+...           description: 'must be a string and is required'
+...         },
+...         creator: {
+...           bsonType: 'objectId',
+...           description: 'must be an objectid and is required'
+...         },
+...         comments: {
+...           bsonType: 'array',
+...           description: 'must be an array and is required',
+...           items: {
+...             bsonType: 'object',
+...             required: ['text', 'author'],
+...             properties: {
+...               text: {
+...                 bsonType: 'string',
+...                 description: 'must be a string and is required'
+...               },
+...               author: {
+...                 bsonType: 'objectId',
+...                 description: 'must be an objectid and is required'
+...               }
+...             }
+...           }
+...         }
+...       }
+...     }
+...   },
+...   validationAction: 'warn'
+... });
+{ "ok" : 1 }
+> 
+
+
