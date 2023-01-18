@@ -1,0 +1,337 @@
+public class ControlFlow {
+    public static void main(String[] args) {
+
+        //Switch Case
+
+        int value = 1;
+
+        switch (value) {
+            case 1 -> System.out.println("Value was 1");
+            case 2 -> System.out.println("Value was 2");
+            default -> System.out.println("Was not 1 or 2");
+        }
+
+        String month = "OCTOBER";
+        System.out.println(month + " is in the " + getQuarter(month) + " quarter");
+    }
+
+    public static String getQuarter(String month){
+        return switch(month){
+            case "JANUARY", "FEBRUARY", "MARCH" -> "1st";
+            case "APRIL", "MAY", "JUNE" -> "2nd";
+            case "JULY", "AUGUST", "SEPTEMBER" -> "3rd";
+            case "OCTOBER", "NOVEMBER", "DECEMBER" -> "4th";
+            default -> "bad";
+        };
+    }
+}
+
+
+public class Loops {
+    public static void main(String[] args) {
+        for(int counter=1; counter<=5; counter++){
+            System.out.println(counter);
+        }
+
+        for(double rate = 2.0; rate<=5.0; rate++){
+            double interestAmount = calculateInterest(10000.0,rate);
+            System.out.println("10000 at " + rate + "% interest " + interestAmount);
+        }
+
+        //for loop with break
+        for(double i = 7.5; i<=10; i+=0.25){
+            double interestAmount = calculateInterest(100.00,i);
+            if(interestAmount>8.5){
+                break;
+            }
+            System.out.println("$100.00 at " + i + "is " + interestAmount);
+        }
+    }
+
+    public static double calculateInterest(double amount, double interestRate){
+        return (amount * (interestRate/100));
+    }
+}
+
+
+public class PrimeNumber {
+    public static void main(String[] args) {
+        System.out.println("0 is " + (isPrime(0) ? "" : "NOT ") + "a prime number");
+        System.out.println("1 is " + (isPrime(1) ? "" : "NOT ") + "a prime number");
+        System.out.println("2 is " + (isPrime(2) ? "" : "NOT ") + "a prime number");
+        System.out.println("3 is " + (isPrime(3) ? "" : "NOT ") + "a prime number");
+        System.out.println("8 is " + (isPrime(8) ? "" : "NOT ") + "a prime number");
+    }
+
+    public static boolean isPrime(int wholeNumber){
+
+        if(wholeNumber <= 2){
+            return (wholeNumber == 2);
+        }
+
+        for(int divisor = 2; divisor < wholeNumber; divisor++){
+            if(wholeNumber % divisor == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+public class LoopChallenge {
+    public static void main(String[] args) {
+
+        int countOfMatches = 0;
+        int sumOfMatches = 0;
+
+        for(int i=1; i<=1000; i++){
+            if((i%3==0) && (i%5==0)){
+                countOfMatches++;
+                sumOfMatches += i;
+                System.out.println("Found a match " + i);
+            }
+
+            if(countOfMatches == 5){
+                break;
+            }
+        }
+
+        System.out.println("Sum = " + sumOfMatches);
+    }
+}
+
+
+public class WhileLoop {
+    public static void main(String[] args) {
+        int number = 4;
+        int finishNumber = 20;
+        int evenCount = 0;
+        int oddCount = 0;
+
+        while(number <= finishNumber){
+            number++;
+
+            if(!isEvenNumber(number)){
+                oddCount++;
+                continue;
+            }
+            System.out.println("Even number " +  number);
+            evenCount++;
+            if(evenCount >= 5){
+                break;
+            }
+        }
+        System.out.println("Odd Number " + oddCount);
+        System.out.println("Even Number " + evenCount);
+    }
+
+    public static boolean isEvenNumber(int number){
+        if((number%2)==0){
+            return true;
+        }
+        return false;
+    }
+}
+
+//Coding Exercises:
+
+public class NumberOfDaysInMonth {
+    public static boolean isLeapYear(int year) {
+ 
+    if ((year < 1) || (year >= 9999)) {
+        return false;
+    } else return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+}
+ 
+public static int getDaysInMonth(int month, int year) {
+ 
+    if (((month < 1) || (month > 12)) || ((year < 1) || (year > 9999))) {
+        return -1;
+    }
+    if (isLeapYear(year) && month == 2) {
+        return 29;
+    }
+ 
+    switch (month) {
+        case 11:
+        case 4:
+        case 6:
+        case 9:
+            return 30;
+        case 2:
+            return 28;
+        default:
+            return 31;
+    }
+ 
+}
+}
+
+
+public class SumOddRange {
+    
+    public static boolean isOdd(int number){
+        if (number <= 0) {
+            return false;
+        }
+        
+        return number % 2 != 0;
+        
+    }
+    
+    public static int sumOdd(int start, int end){
+        if ( (end < start) || (start < 0) || (end < 0) ){
+            return -1;
+        }
+        int sum = 0;
+        
+        for (int i = start; i<=end; i++){
+            if (isOdd(i)){
+                sum +=i;
+            }
+        }
+        return sum;
+        
+    }
+ 
+}
+
+
+public class NumberPalindrome {
+    
+    public static boolean isPalindrome(int number){
+        if(number<0){
+            number = number*-1;
+        }
+        
+        int reverse = 0;
+        int stored = number;
+        while(stored>0){
+            int digit = stored%10;
+            reverse = (reverse*10) +  digit;
+            stored = stored/10;
+        }
+        
+        if(number==reverse){
+            return true;
+        }
+        return false;
+    }
+ 
+}
+
+
+public class FirstLastDigitSum {
+    public static int sumFirstAndLastDigit(int number){
+        if(number<0){
+            return -1;
+        }
+        int lastDigit = number%10;
+        
+        while(number>9){
+            number = number/10;
+        }
+        int ans = number + lastDigit;
+        return ans;
+    }
+}
+
+
+public class EvenDigitSum {
+    public static int getEvenDigitSum(int number){
+        if(number<0){
+            return -1;
+        }
+        int evenSum = 0;
+        
+        int stored = number;
+        
+        while(stored>0){
+            int digit = stored%10;
+            if(digit%2==0){
+                evenSum += digit;
+            }
+            stored = stored/10;
+        }
+        return evenSum;
+    }
+}
+
+
+public class SharedDigit {
+    public static boolean hasSharedDigit(int a,int b){
+        if(a<10 || a>99 || b<10 || b>99){
+            return false;
+        }
+        return (a/10 == b/10) || (a/10 == b%10) || (a%10 == b/10) || (a%10 == b%10); 
+    }
+}
+
+
+public class LastDigitChecker {
+    public static boolean isValid(int num){
+        return (num > 9) && (num < 1001);
+    }
+ 
+    public static boolean hasSameLastDigit(int a, int b, int c){
+        if(isValid(a) && isValid(b) && isValid(c)){
+            a %= 10;
+            b %= 10;
+            c %= 10;
+            return (a == b) || (a == c) || (b == c);
+        }
+        return false;
+    }
+}
+
+
+public class FactorPrinter {
+    public static void printFactors(int number) {
+    if (number < 0) {
+        System.out.println("Invalid Value");
+        return;
+        
+    }
+    for (int i = 1; i <= number / 2; i++) {
+        if (number % i == 0) {
+            System.out.println(i);
+        }
+    
+    }
+    System.out.print(number);
+    
+}
+
+}
+
+
+
+public class GreatestCommonDivisor {
+    public static int getGreatestCommonDivisor(int first, int second) {
+        if (first < 10 || second < 10) return -1;
+        
+        while (first != second) {
+            if (first > second) first -= second;   
+            else second -= first;
+        }
+        return first;
+    }
+}
+
+
+public class LargestPrime {
+    public static int getLargestPrime(int number){
+        if(number<2){
+            return -1;
+        }
+        for(int i=2; i<number; i++){
+            if((number%i)==0){
+                number/=i;
+                i--;
+            }
+        }
+        return number;
+    }
+}
+
