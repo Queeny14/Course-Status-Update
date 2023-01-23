@@ -1,0 +1,273 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
+record GroceryItem(String name, String type, int count){
+    public GroceryItem(String name){
+        this(name, "DAIRY", 1);
+    }
+
+    public String toString(){
+        return String.format("%d %s in %s", count, name.toUpperCase(), type);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        GroceryItem[] groceryArray = new GroceryItem[3];
+        groceryArray[0] = new GroceryItem("milk");
+        groceryArray[1] = new GroceryItem("apple", "PRODUCE", 6);
+        groceryArray[2] = new GroceryItem("oranges", "PRODUCE", 10);
+        System.out.println(Arrays.toString(groceryArray));
+
+        ArrayList<GroceryItem> groceryList = new ArrayList<>();
+        groceryList.add(new GroceryItem("Butter"));
+        groceryList.add(new GroceryItem("Milk"));
+        groceryList.add(new GroceryItem("oranges","PRODUCE",10));
+        groceryList.add(0, new GroceryItem("apples","PRODUCE",5));
+        groceryList.remove(1);
+        System.out.println(groceryList);
+    }
+}
+
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+public class MoreLists {
+
+    public static void main(String[] args) {
+        String[] items = {"apples", "bananas", "milk"};
+
+        List<String>list = List.of(items);      //Factory Method
+        System.out.println(list);
+
+        //System.out.println(list.getClass().getName());
+
+        ArrayList<String> groceries =  new ArrayList(list);
+        groceries.add("yogurt");
+        System.out.println(groceries);
+
+        ArrayList<String> nextList = new ArrayList<>(List.of("pickles","mustard", "cheese"));
+        System.out.println(nextList);
+
+        groceries.addAll(nextList);
+        System.out.println(groceries);
+
+        System.out.println("Third item = " + groceries.get(2));
+
+        if(groceries.contains("mustard")){
+            System.out.println("LIst contains mustard");
+        }
+
+        groceries.add("yogurt");
+        System.out.println("first = " + groceries.indexOf("yogurt"));
+        System.out.println("last = " + groceries.lastIndexOf("yogurt"));
+
+        System.out.println(groceries);
+        groceries.remove(1);
+        System.out.println(groceries);
+        groceries.remove("yogurt");
+        System.out.println(groceries);
+
+        groceries.removeAll(List.of("apples", "bananas"));
+        System.out.println(groceries);
+
+        groceries.clear();
+        System.out.println(groceries);
+        System.out.println("isEmpty = " + groceries.isEmpty());
+
+        groceries.addAll(List.of("apples", "milk", "mustard", "cheese"));
+        groceries.addAll(Arrays.asList("eggs", "pickles", "mustard", "ham"));
+
+        System.out.println(groceries);
+        groceries.sort(Comparator.naturalOrder());
+        System.out.println(groceries);
+
+        groceries.sort(Comparator.reverseOrder());
+        System.out.println(groceries);
+
+
+
+
+    }
+
+}
+
+
+
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Comparision {
+    public static void main(String[] args) {
+        String[] originalArray = new String[] {"First", "Second", "Third", "Fourth"};
+        var originalList = Arrays.asList(originalArray);
+
+        originalList.set(0, "one");
+        System.out.println("list: " + originalList);
+        System.out.println("array: " + Arrays.toString(originalArray));
+
+        originalList.sort(Comparator.naturalOrder());
+        System.out.println("array: " + Arrays.toString(originalArray));
+
+        originalList.remove("fourth");
+
+    }
+}
+
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Scanner;
+
+public class ArrayListChallenge {
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean flag = true;
+        ArrayList<String>groceries = new ArrayList<>();
+        while(flag){
+            printActions();
+            switch(Integer.parseInt(scanner.nextLine())){
+                case 1 -> addItems(groceries);
+                case 2 -> removeItems(groceries);
+                default -> flag = false;
+            }
+            groceries.sort(Comparator.naturalOrder());
+            System.out.println(groceries);
+        }
+    }
+
+    private static void addItems(ArrayList<String> groceries){
+        System.out.println("Add items [separate items by comma]: ");
+        String[] items = scanner.nextLine().split(",");
+        //groceries.addAll(List.of(items));
+
+        for(String i: items){
+            String trimmed = i.trim();
+            if (groceries.indexOf(trimmed) < 0){
+                groceries.add(trimmed);
+            }
+        }
+    }
+
+    private static void removeItems(ArrayList<String> groceries){
+        System.out.println("remove items [separate items by comma]: ");
+        String[] items = scanner.nextLine().split(",");
+
+
+        for(String i: items){
+            String trimmed = i.trim();
+            groceries.remove(trimmed);
+
+        }
+    }
+    private static void printActions(){
+        String textBlock = """
+                Available actions:
+                                
+                0 - to shutdown
+                                
+                1 - to add item(s) to list (comma delimited list)
+                                
+                2 - to remove any items (comma delimited list)
+                                
+                Enter a number for which action you want to do:""";
+        System.out.println(textBlock + " ");
+    }
+}
+
+
+
+
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class LinkedListImplementation {
+
+    public static void main(String[] args) {
+        //LinkedList<String> placesToVisit = new LinkedList<>();
+        var placesToVisit = new LinkedList<String>();
+
+        placesToVisit.add("Sydney");
+        placesToVisit.add(0,"Canberra");
+        System.out.println(placesToVisit);
+
+        addMoreElements(placesToVisit);
+        System.out.println(placesToVisit);
+    }
+
+    private static void addMoreElements(LinkedList<String>list){
+        list.addFirst("Darwin");
+        list.addLast("Hobart");
+        //Queue methods
+        list.offer("Melbourne");
+        list.offerFirst("germany");
+        list.offerLast("Canada");
+        //StackMethods
+        list.push("India");
+    }
+    private static void removeElements(LinkedList<String>list){
+        list.remove(4);
+        list.remove("germany");
+    }
+
+    public static void printItinerary(LinkedList<String>list){
+        System.out.println("Trip starts at " + list.getFirst());
+        String previousTown = list.getFirst();
+        ListIterator<String> iterator = list.listIterator();
+        while(iterator.hasNext()){
+            var town = iterator.next();
+            System.out.println("--> From: " + previousTown);
+            previousTown = town;
+        }
+        System.out.println("Trip ends at " + list.getLast());
+    }
+
+    //Iterator
+    private static void testIterator(LinkedList<String>list){
+        var iterator = list.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+        System.out.println(list);
+    }
+}
+
+
+
+import java.util.LinkedList;
+
+record Place(String name, int distance){
+    @Override
+    public String toString() {
+        return String.format("%s (%d)", name, distance);
+    }
+}
+public class LinkedListChallenge {
+    public static void main(String[] args) {
+        LinkedList<Place> placesToVisit = new LinkedList<>();
+
+        Place adelaide = new Place("Adelaide", 1347);
+        addPlace(placesToVisit, adelaide);
+        addPlace(placesToVisit, new Place("Adelaide",1374));
+        System.out.println(placesToVisit);
+    }
+    private static void addPlace(LinkedList<Place> list, Place place){
+        if(list.contains(place)){
+            System.out.println("Found duplicate: " + place);
+            return;
+        }
+        for (Place p : list){
+            if(p.name().equalsIgnoreCase(place.name())){
+                System.out.println("Found duplicate : " + place);
+                return;
+            }
+        }
+        list.add(place);
+    }
+}
+
