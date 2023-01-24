@@ -1,0 +1,137 @@
+public class Main {
+    public static void main(String[] args) {
+        GearBox mcLaren = new GearBox(6);
+        mcLaren.addGear(1,5.3);
+        mcLaren.addGear(2,10.6);
+        mcLaren.addGear(3,15.9);
+        mcLaren.changeGear(1);
+        mcLaren.operateClutch(false);
+        System.out.println(mcLaren.wheelSpeed(1000));
+        mcLaren.changeGear(2);
+        System.out.println(mcLaren.wheelSpeed(3000));
+
+          Dog dog = new Dog("Yorkie");
+          dog.breathe();
+          dog.eat();
+
+          Bird bird = new Bird("Parrot");
+          bird.breathe();
+          bird.eat();
+    }
+}
+
+public class Bird extends Animal{
+    public Bird(String name){
+        super(name);
+    }
+    public void eat(){
+        System.out.println(getName() + " is pecking");
+    }
+    public void breathe(){
+        System.out.println("Bird breathing");
+    }
+    
+    public abstract class Animal {
+   private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public abstract void eat();
+    public abstract void breathe();
+
+    public String getName() {
+        return name;
+    }
+}
+
+
+public class Dog extends Animal{
+    public Dog(String name) {
+        super(name);
+    }
+
+    @Override
+    public void eat() {
+        System.out.println(getName() + " is eating");
+    }
+
+    @Override
+    public void breathe() {
+        System.out.println("Breathe and repeat");
+    }
+}
+
+
+
+import java.util.ArrayList;
+
+public class GearBox {
+    private ArrayList<Gear>gears;
+    private int maxGears;
+    private int currentGear = 0;
+    private boolean clutchIsIn;
+    public GearBox(int maxGears) {
+        this.maxGears = maxGears;
+        this.gears = new ArrayList<>();
+        Gear neutral = new Gear(0,0.0);
+        this.gears.add(neutral);
+    }
+
+    public void operateClutch(boolean in){
+        this.clutchIsIn = in;
+    }
+
+    public void addGear(int number, double ratio){
+        if((number>0) && (number<=maxGears)){
+            this.gears.add(new Gear(number,ratio));
+        }
+    }
+
+    public void changeGear(int newGear){
+        if((newGear >= 0) && (newGear < this.gears.size()) && this.clutchIsIn){
+            this.currentGear = newGear;
+            System.out.println("Gear " + newGear + " selected");
+        }
+        else{
+            System.out.println("Grind!");
+            this.currentGear = 0;
+        }
+    }
+
+    public double wheelSpeed(int revs){
+        if(clutchIsIn){
+            System.out.println("Scream!!!");
+            return 0.0;
+        }
+        return revs * gears.get(currentGear).getRatio();
+    }
+
+
+
+
+
+    public class Gear{
+        private int gearNumber;
+        private double ratio;
+
+        public Gear(int gearNumber, double ratio){
+            this.gearNumber = gearNumber;
+            this.ratio = ratio;
+        }
+
+        public double getRatio() {
+            return ratio;
+        }
+
+        public int getGearNumber() {
+            return gearNumber;
+        }
+
+        public double driveSpeed(int revs){
+            return revs * (this.ratio);
+        }
+    }
+}
+
+
