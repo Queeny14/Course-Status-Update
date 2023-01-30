@@ -1,0 +1,234 @@
+import java.util.ArrayList;
+
+public class Account {
+    public String accountName;
+    public int balance = 0;
+    public ArrayList<Integer> transactions;
+
+    public Account(String accountName){
+        this.accountName = accountName;
+        this.transactions = new ArrayList<Integer>();
+    }
+
+    public int getBalance(){
+        return balance;
+    }
+    public void deposit(int amount){
+        if(amount > 0){
+            transactions.add(amount);
+            this.balance += amount;
+            System.out.println(amount + " deposited");
+
+        }
+        else{
+            System.out.println("Cannot deposit negative amount");
+        }
+    }
+
+    public void withdraw(int amount){
+        int withdrawal = -amount;
+        if(withdrawal < 0){
+            this.transactions.add(withdrawal);
+            this.balance += withdrawal;
+            System.out.println(amount + " withdrawn.");
+        }
+        else{
+            System.out.println("Cannot withdraw negative amount");
+        }
+    }
+
+    public void calculateBalance(){
+        this.balance = 0;
+        for(int i : this.transactions){
+            this.balance += i;
+        }
+        System.out.println("Calculated balance is " + this.balance);
+    }
+}
+
+
+
+public class main {
+    public static void main(String[] args) {
+        Account timsAccount = new Account("Queeny");
+        timsAccount.deposit(1000);
+        timsAccount.withdraw(500);
+        timsAccount.withdraw(-200);
+        timsAccount.deposit(-20);
+        timsAccount.calculateBalance();
+
+        System.out.println("Balance on account is " + timsAccount);
+    }
+}
+
+
+public class SomeClass {
+    private static int classCounter = 0;
+    public final int instanceNumber;
+    private final String name;
+
+    public SomeClass(String name){
+        this.name = name;
+        classCounter++;
+        instanceNumber = classCounter;
+        System.out.println(name + " created, instance is " + instanceNumber);
+
+    }
+
+    public int getInstanceNumber() {
+        return instanceNumber;
+    }
+}
+
+
+
+public class StaticTest {
+    private static int numInstances = 0;      //should use static if we want to share the value of this instance across all variables.
+    private String name;
+
+    public StaticTest(String name){
+        this.name = name;
+        numInstances++;
+    }
+
+    public int getNumInstances() {
+        return numInstances;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+
+
+public class Laptop implements Comparable<Laptop> {
+    private String brand;
+    private int ram;
+    private int price;
+
+    public Laptop(String brand, int ram, int price) {
+        this.brand = brand;
+        this.ram = ram;
+        this.price = price;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public int getRam() {
+        return ram;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Laptop{" +
+                "brand='" + brand + '\'' +
+                ", ram=" + ram +
+                ", price=" + price +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Laptop laptop) {
+        if(this.getRam() > laptop.getRam()){
+            return 1;
+        }
+        else
+            return -1;
+    }
+}
+
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class Main {
+
+    public static void main(String[] args) {
+        StaticTest firstInstance = new StaticTest("1st Instance");
+        System.out.println(firstInstance.getName() + " is instance number " + firstInstance.getNumInstances());
+
+        StaticTest secondInstance = new StaticTest("2nd Instance");
+        System.out.println(secondInstance.getName() + " is instance number " + secondInstance.getNumInstances());
+
+
+
+        SomeClass one = new SomeClass("one");
+        SomeClass two = new SomeClass("two");
+        SomeClass three = new SomeClass("three");
+
+        System.out.println(one.getInstanceNumber());
+        System.out.println(two.getInstanceNumber());
+        System.out.println(three.getInstanceNumber());
+
+        List<Laptop> laps = new ArrayList<>();
+        laps.add(new Laptop("Dell",16,800));
+        laps.add(new Laptop("Apple",8,1200));
+        laps.add(new Laptop("Acer",12,700));
+
+        Comparator<Laptop> com = new Comparator<Laptop>()
+        {
+            public int compare(Laptop l1, Laptop l2){
+                if(l1.getPrice() > l2.getPrice())
+                    return 1;
+                else
+                    return -1;
+            }
+        };
+
+        Collections.sort(laps,com);
+
+        for(Laptop l : laps){
+            System.out.println(l);
+        }
+
+    }
+
+
+}
+
+
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+//Stack Trace and Call Stack
+public class Example {
+    public static void main(String[] args) {
+        int result = divide();
+        System.out.println(result);
+    }
+    private static int divide(){
+        int x = getInt();
+        int y = getInt();
+        System.out.println("x is " + x + " , y is " + y);
+        return x/y;
+    }
+    private static int getInt(){
+        Scanner s = new Scanner(System.in);
+        System.out.println("Please enter an integer");
+        while(true){
+            try{
+                return s.nextInt();
+            }
+            catch(InputMismatchException e){
+                s.nextLine();
+                System.out.println("Please enter the number only using the digits 1 to 9");
+            }
+        }
+
+    }
+}
+
+
+
+
