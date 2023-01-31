@@ -1,0 +1,154 @@
+public class MyThread implements Runnable{
+    public void run(){
+        for(int i=1; i<=10; i++){
+            System.out.println("value of i is " +i);
+            try{
+                Thread.sleep(1000);
+            }catch(Exception e){}
+        }
+    }
+
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        Thread thr = new Thread(t1);
+
+        //object of another thread
+        MyAnotherThread t2 = new MyAnotherThread();
+        thr.start();
+        t2.start();
+    }
+}
+
+
+
+public class ThreadOp {
+    public static void main(String[] args) {
+        System.out.println("program started...");
+        int x= 56+34;
+        System.out.println("sum is " +x);
+        Thread t = Thread.currentThread();
+        String tname = t.getName();
+        System.out.println("current thread is " + tname);
+
+        System.out.println("program ended...");
+    }
+}
+
+
+public class Company {
+    int n;
+    boolean f= false;
+    //f = false: chance: producer
+    //f = true: chance: consumer
+    synchronized public void produce_item(int n){
+        if(f){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        this.n = n;
+        System.out.println("Produced item : " + this.n);
+        f = true;
+        notify();
+    }
+    synchronized public int consume_item(){
+        if(!f){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("Consumed : " + this.n);
+        f = false;
+        notify();
+        return this.n;
+    }
+}
+
+
+public class Producer extends Thread{
+    Company c;
+
+    public Producer(Company c){
+        this.c = c;
+    }
+    public void run(){
+        int i = 1;
+        while(true){
+            this.c.produce_item(i);
+            try{
+                Thread.sleep(1000);
+            }catch(Exception e){}
+            i++;
+        }
+    }
+}
+
+
+public class Consumer extends Thread{
+    Company c;
+    public Consumer(Company c){
+        this.c = c;
+    }
+    public void run(){
+
+        while(true){
+            this.c.consume_item();
+            try{
+                Thread.sleep(1000);
+            }catch(Exception e){}
+
+        }
+    }
+}
+
+
+@FunctionalInterface
+interface A{
+    void show();
+}
+
+//class B extends Object implements A{
+//    public void show(){
+//        System.out.println("hi");
+//    }
+//}
+
+public class Demo {
+    public static void main(String[] args) {
+        A obj = () -> System.out.println("hi in lambda");
+        obj.show();
+    }
+}
+
+
+@FunctionalInterface
+interface Drawable{
+    public void draw();
+
+}
+public class LambdaImplementation{
+    public static void main(String[] args) {
+        int width = 10;
+
+
+        //Without Lambda (using anonymous class)
+
+        Drawable d = new Drawable() {
+            @Override
+            public void draw() {
+                System.out.println("Drawing Normally " + width);
+            }
+        };
+        d.draw();
+
+        //Using Lambda Expression
+        Drawable d2 = ()->{
+            System.out.println("Drawing using lambda " +width);
+        };
+        d2.draw();
+    }
+}
